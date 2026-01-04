@@ -55,7 +55,7 @@ export async function githubConnect(
     // Step 3: Upload avatar to S3 (outside transaction for performance)
     const imageResponse = await fetch(githubProfile.avatar_url);
     const imageBuffer = await imageResponse.arrayBuffer();
-    const avatar = await uploadImage(userId, 'avatars', 'github', githubProfile.avatar_url, Buffer.from(imageBuffer));
+    const avatar = await uploadImage(userId, 'avatars', 'github', githubProfile.avatar_url, Buffer.from(imageBuffer)) ?? undefined;
 
     // Extract name from GitHub profile
     const name = separateName(githubProfile.name);
