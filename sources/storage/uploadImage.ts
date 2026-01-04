@@ -1,9 +1,15 @@
 import { randomKey } from "@/utils/randomKey";
 import { processImage } from "./processImage";
-import { s3bucket, s3client, s3host } from "./files";
+import { s3bucket, s3client, s3host, s3Enabled } from "./files";
 import { db } from "./db";
 
 export async function uploadImage(userId: string, directory: string, prefix: string, url: string, src: Buffer) {
+
+    // Check if S3 is enabled
+    if (!s3Enabled || !s3client) {
+        console.log('S3 storage disabled - skipping image upload');
+        return null;
+    }
 
     // Check if image already exists
     const existing = await db.uploadedFile.findFirst({
