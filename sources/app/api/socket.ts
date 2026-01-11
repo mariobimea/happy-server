@@ -12,6 +12,7 @@ import { sessionUpdateHandler } from "./socket/sessionUpdateHandler";
 import { machineUpdateHandler } from "./socket/machineUpdateHandler";
 import { artifactUpdateHandler } from "./socket/artifactUpdateHandler";
 import { accessKeyHandler } from "./socket/accessKeyHandler";
+import { claudeStreamHandler } from "./socket/claudeStreamHandler";
 
 export function startSocket(app: Fastify) {
     const io = new Server(app.server, {
@@ -144,6 +145,7 @@ export function startSocket(app: Fastify) {
         machineUpdateHandler(userId, socket);
         artifactUpdateHandler(userId, socket);
         accessKeyHandler(userId, socket);
+        claudeStreamHandler(userId, socket);
 
         // Ready
         log({ module: 'websocket' }, `User connected: ${userId}`);

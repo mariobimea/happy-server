@@ -179,6 +179,12 @@ export type EphemeralEvent = {
     machineId: string;
     online: boolean;
     timestamp: number;
+} | {
+    type: 'claude-stream';
+    machineId: string;
+    sessionId: string;
+    event: unknown;
+    timestamp: number;
 };
 
 // === EVENT PAYLOAD TYPES ===
@@ -516,6 +522,16 @@ export function buildMachineStatusEphemeral(machineId: string, online: boolean):
         type: 'machine-status',
         machineId,
         online,
+        timestamp: Date.now()
+    };
+}
+
+export function buildClaudeStreamEphemeral(machineId: string, sessionId: string, event: unknown): EphemeralPayload {
+    return {
+        type: 'claude-stream',
+        machineId,
+        sessionId,
+        event,
         timestamp: Date.now()
     };
 }
