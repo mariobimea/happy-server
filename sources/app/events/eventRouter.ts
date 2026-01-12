@@ -185,6 +185,15 @@ export type EphemeralEvent = {
     sessionId: string;
     event: unknown;
     timestamp: number;
+} | {
+    type: 'session-lifecycle';
+    machineId: string;
+    tempId: string;
+    stage: 'spawning' | 'initializing' | 'ready' | 'error';
+    sessionId?: string;
+    error?: string;
+    directory?: string;
+    timestamp: number;
 };
 
 // === EVENT PAYLOAD TYPES ===
@@ -645,5 +654,27 @@ export function buildKVBatchUpdateUpdate(
             changes
         },
         createdAt: Date.now()
+    };
+}
+
+export function buildSessionLifecycleEphemeral(
+    machineId: string,
+    tempId: string,
+    stage: 'spawning' | 'initializing' | 'ready' | 'error',
+    options?: {
+        sessionId?: string;
+        error?: string;
+        directory?: string;
+    }
+): EphemeralPayload {
+    return {
+        type: 'session-lifecycle',
+        machineId,
+        tempId,
+        stage,
+        sessionId: options?.sessionId,
+        error: options?.error,
+        directory: options?.directory,
+        timestamp: Date.now()
     };
 }
